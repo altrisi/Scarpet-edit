@@ -5,6 +5,7 @@ on:
     types: [published]
 jobs:
   List-languages:
+    runs-on: ubuntu-latest
     outputs:
       matrix-langs: ${{ steps.langs.outputs.matrix-langs }}
     steps:
@@ -22,6 +23,7 @@ jobs:
           output+="]"
           echo $output
   Publish-App:
+    runs-on: ubuntu-latest
     steps:
       - name: Upload ScarpetEdit app
         uses: actions/upload-release-asset@v1
@@ -33,6 +35,7 @@ jobs:
           asset_name: se.sc
           asset_content_type: text/plain
   Publish-Languages:
+    runs-on: ubuntu-latest
     needs: [List-languages]
     strategy:
       matrix:

@@ -26,6 +26,7 @@ jobs:
           echo $output
   Publish-App:
     runs-on: ubuntu-latest
+    needs: [Publish-Language]
     steps:
       - name: Checkout the repo
         uses: actions/checkout@v2
@@ -38,7 +39,7 @@ jobs:
           asset_path: se.sc
           asset_name: se.sc
           asset_content_type: text/plain
-  Publish-Languages:
+  Publish-Language:
     runs-on: ubuntu-latest
     needs: [List-languages]
     strategy:

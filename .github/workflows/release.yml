@@ -43,7 +43,7 @@ jobs:
     needs: [List-languages]
     strategy:
       matrix:
-        lang: ${{ toJson(needs.List-languages.outputs.matrix-langs) }}
+        lang: ${{ fromJson(needs.List-languages.outputs.matrix-langs) }}
     steps:
       - name: Checkout the repo
         uses: actions/checkout@v2

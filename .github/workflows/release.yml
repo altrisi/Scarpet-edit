@@ -1,0 +1,47 @@
+name: Publish Release
+
+on:
+  release:
+    types: [published]
+jobs:
+  List-languages:
+    outputs:
+      matrix-langs: ${{ steps.langs.outputs.matrix-langs }}
+    steps:
+      - name: Get the list of languages for the matrix
+        id: langs
+        run: |
+          output="::set-output name=matrix-langs::["
+          cd se.data/langs
+          for entry in `ls`; do 
+              if [ "$entry" != "en_us.json" ]; then
+                  output+="$entry, "
+              fi
+          done
+          output=${output:0:-2}
+          output+="]"
+          echo $output
+  Publish-App:
+    steps:
+      - name: Upload ScarpetEdit app
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ github.event.release.upload_url }}
+          asset_path: se.sc
+          asset_name: se.sc
+          asset_content_type: text/plain
+  Publish-Languages:
+    needs: [List-languages]
+    strategy:
+      matrix:
+        lang: ${{ needs.List-languages.outputs.matrix-langs }}
+    steps:
+      - name: Upload ${{ matrix.lang }}
+        uses: actions/upload-release-asset@v1
+        with:
+          upload_url: ${{ github.event.release.upload_url }}
+          asset_path: ${{ matrix.lang }}
+          asset_name: ${{ matrix.lang }}
+          asset_content_type: application/json

@@ -18,7 +18,7 @@ jobs:
           cd se.data/langs
           for entry in `ls`; do 
               if [ "$entry" != "en_us.json" ]; then
-                  output+="${entry//[_]/-}, "
+                  output+="$entry, "
               fi
           done
           output=${output:0:-2}
@@ -51,6 +51,6 @@ jobs:
         uses: actions/upload-release-asset@v1
         with:
           upload_url: ${{ github.event.release.upload_url }}
-          asset_path: ${{ matrix.lang }}.json
-          asset_name: ${{ matrix.lang }}.json
+          asset_path: ${{ matrix.lang }}
+          asset_name: ${{ matrix.lang }}
           asset_content_type: application/json

@@ -9,6 +9,8 @@ jobs:
     outputs:
       matrix-langs: ${{ steps.langs.outputs.matrix-langs }}
     steps:
+      - name: Checkout the repo
+        uses: actions/checkout@v2
       - name: Get the list of languages for the matrix
         id: langs
         run: |
@@ -25,6 +27,8 @@ jobs:
   Publish-App:
     runs-on: ubuntu-latest
     steps:
+      - name: Checkout the repo
+        uses: actions/checkout@v2
       - name: Upload ScarpetEdit app
         uses: actions/upload-release-asset@v1
         env:
@@ -41,6 +45,8 @@ jobs:
       matrix:
         lang: ${{ needs.List-languages.outputs.matrix-langs }}
     steps:
+      - name: Checkout the repo
+        uses: actions/checkout@v2
       - name: Upload ${{ matrix.lang }}
         uses: actions/upload-release-asset@v1
         with:
